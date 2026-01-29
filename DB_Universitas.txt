@@ -1,0 +1,106 @@
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 35
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> create database db_universitas;
+Query OK, 1 row affected (0.008 sec)
+
+MySQL [(none)]> use db_universitas;
+Database changed
+MySQL [db_universitas]> create table mahasiswa(
+    -> id int primary key auto_increment,
+    -> nama varchar(50),
+    -> alamat text,
+    -> thn_lahir int,
+    -> thn_masuk int,
+    -> jurusan varchar(50));
+Query OK, 0 rows affected (0.020 sec)
+
+MySQL [db_universitas]> insert into mahasiswa (nama, alamat, thn_lahir, thn_masuk, jurusan) values
+    -> ('Caca','Bogor',2000,2015,'Sastra Inggris'),
+    -> ('Cici','Jakarta',2002,2017,'Sastra Inggris'),
+    -> ('Cece','Bogor',2005,2015,'Informatika'),
+    -> ('Cucu','Depok',2000,2018,'Kedokteran Gigi'),
+    -> ('Coco','Tangerang',2001,2015,'Sistem Informasi');
+Query OK, 5 rows affected (0.008 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MySQL [db_universitas]> select * from mahasiswa;
++----+------+-----------+-----------+-----------+------------------+
+| id | nama | alamat    | thn_lahir | thn_masuk | jurusan          |
++----+------+-----------+-----------+-----------+------------------+
+|  1 | Caca | Bogor     |      2000 |      2015 | Sastra Inggris   |
+|  2 | Cici | Jakarta   |      2002 |      2017 | Sastra Inggris   |
+|  3 | Cece | Bogor     |      2005 |      2015 | Informatika      |
+|  4 | Cucu | Depok     |      2000 |      2018 | Kedokteran Gigi  |
+|  5 | Coco | Tangerang |      2001 |      2015 | Sistem Informasi |
++----+------+-----------+-----------+-----------+------------------+
+5 rows in set (0.001 sec)
+
+MySQL [db_universitas]> update mahasiswa set alamat = 'Solo' where id='4';
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MySQL [db_universitas]> delete from mahasiswa where id='2';
+Query OK, 1 row affected (0.005 sec)
+
+MySQL [db_universitas]> select nama,thn_lahir,thn_masuk from mahasiswa;
++------+-----------+-----------+
+| nama | thn_lahir | thn_masuk |
++------+-----------+-----------+
+| Caca |      2000 |      2015 |
+| Cece |      2005 |      2015 |
+| Cucu |      2000 |      2018 |
+| Coco |      2001 |      2015 |
++------+-----------+-----------+
+4 rows in set (0.001 sec)
+
+MySQL [db_universitas]> select distinct jurusan from mahasiswa;
++------------------+
+| jurusan          |
++------------------+
+| Sastra Inggris   |
+| Informatika      |
+| Kedokteran Gigi  |
+| Sistem Informasi |
++------------------+
+4 rows in set (0.001 sec)
+
+MySQL [db_universitas]> select *, thn_masuk-thn_lahir as usia_saat_masuk from mahasiswa;
++----+------+-----------+-----------+-----------+------------------+-----------------+
+| id | nama | alamat    | thn_lahir | thn_masuk | jurusan          | usia_saat_masuk |
++----+------+-----------+-----------+-----------+------------------+-----------------+
+|  1 | Caca | Bogor     |      2000 |      2015 | Sastra Inggris   |              15 |
+|  3 | Cece | Bogor     |      2005 |      2015 | Informatika      |              10 |
+|  4 | Cucu | Solo      |      2000 |      2018 | Kedokteran Gigi  |              18 |
+|  5 | Coco | Tangerang |      2001 |      2015 | Sistem Informasi |              14 |
++----+------+-----------+-----------+-----------+------------------+-----------------+
+4 rows in set (0.001 sec)
+
+MySQL [db_universitas]> select thn_masuk-thn_lahir as usia_saat_masuk from mahasiswa order by thn_masuk-thn_lahir desc;
++-----------------+
+| usia_saat_masuk |
++-----------------+
+|              18 |
+|              15 |
+|              14 |
+|              10 |
++-----------------+
+4 rows in set (0.003 sec)
+
+MySQL [db_universitas]> select nama, jurusan, thn_masuk-thn_lahir as usia_saat_masuk from mahasiswa where thn_masuk-thn_lahir<=15;
++------+------------------+-----------------+
+| nama | jurusan          | usia_saat_masuk |
++------+------------------+-----------------+
+| Caca | Sastra Inggris   |              15 |
+| Cece | Informatika      |              10 |
+| Coco | Sistem Informasi |              14 |
++------+------------------+-----------------+
+3 rows in set (0.001 sec)
+
+MySQL [db_universitas]> truncate table mahasiswa;
+Query OK, 0 rows affected (0.027 sec)
